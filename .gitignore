@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+
+# Env
+.env
+
+# Build / runtime artifacts
+object_store/*.json
+
+# Frontend
+node_modules/
+dashboard/node_modules/
+dashboard/dist/
+
+# IDE
+.vscode/
+.idea/

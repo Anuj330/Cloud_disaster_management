@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     monitoring_enabled: bool = True
     monitoring_interval_seconds: int = 15
     cors_origins: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000"
+    db_wait_max_retries: int = 30
+    db_wait_interval_seconds: float = 2.0
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False)
 

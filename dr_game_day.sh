@@ -12,7 +12,7 @@ set -euo pipefail
 #   PRIMARY_REGION=region-a
 #   STANDBY_REGION=region-b
 #   ADMIN_USER=admin
-#   ADMIN_PASS=admin12345
+#   ADMIN_PASS=<set-required-password>
 #   SERVICE_NAME=billing-api
 
 BASE_URL="${BASE_URL:-http://localhost:8000}"
@@ -20,7 +20,7 @@ PRIMARY_MOCK="${PRIMARY_MOCK:-http://localhost:9001}"
 PRIMARY_REGION="${PRIMARY_REGION:-region-a}"
 STANDBY_REGION="${STANDBY_REGION:-region-b}"
 ADMIN_USER="${ADMIN_USER:-admin}"
-ADMIN_PASS="${ADMIN_PASS:-admin12345}"
+ADMIN_PASS="${ADMIN_PASS:-}"
 SERVICE_NAME="${SERVICE_NAME:-billing-api}"
 
 START_EPOCH="$(date +%s)"
@@ -34,6 +34,11 @@ need_cmd() {
 need_cmd curl
 need_cmd jq
 need_cmd docker
+
+if [[ -z "${ADMIN_PASS}" ]]; then
+  echo "ADMIN_PASS is required. Export ADMIN_PASS before running this script."
+  exit 1
+fi
 
 api_post_json() {
   local path="$1"

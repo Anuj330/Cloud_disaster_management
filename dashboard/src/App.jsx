@@ -5,8 +5,8 @@ const REFRESH_MS = 5000;
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("dr_token") || "");
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("admin12345");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -107,11 +107,16 @@ export default function App() {
           <form onSubmit={onLogin} className="form">
             <label>
               Username
-              <input value={username} onChange={(e) => setUsername(e.target.value)} />
+              <input value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
             </label>
             <label>
               Password
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
             </label>
             <button disabled={loading}>{loading ? "Signing in..." : "Sign in"}</button>
           </form>

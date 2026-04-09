@@ -52,6 +52,10 @@ cp .env.example .env
 docker compose up --build
 ```
 
+For local development, `.env.example` enables:
+- `ALLOW_INSECURE_DEV_DEFAULTS=true`
+- `BOOTSTRAP_INITIAL_ADMIN=true` (with configurable `INITIAL_ADMIN_*` values)
+
 This starts:
 
 - API: `http://localhost:8000`
@@ -61,8 +65,8 @@ This starts:
 
 Default admin account:
 
-- username: `admin`
-- password: `admin12345`
+- username/password are created only when `BOOTSTRAP_INITIAL_ADMIN=true`
+- configure `INITIAL_ADMIN_USERNAME` and `INITIAL_ADMIN_PASSWORD` in `.env`
 
 ## Migration Workflow
 
@@ -86,7 +90,7 @@ alembic downgrade -1
 ```bash
 curl -X POST http://localhost:8000/api/v1/auth/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=admin&password=admin12345"
+  -d "username=<admin_user>&password=<admin_password>"
 ```
 
 Set token:
@@ -185,6 +189,11 @@ curl -X GET http://localhost:8000/metrics
   - full access to all DR operations
 - `operator`:
   - health checks, failover, backups, restore, observability
+
+## Health Endpoints
+
+- `/health` and `/health/live`: liveness
+- `/health/ready`: readiness (checks PostgreSQL + Redis, returns `503` when dependencies are unavailable)
 
 ## Notes for Production Hardening
 

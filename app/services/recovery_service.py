@@ -17,6 +17,15 @@ def run_recovery_workflow(db: Session, service_id: int, reason: str) -> Recovery
     if not service:
         raise ValueError("Service not found")
 
+    existing_workflow = (
+        db.query(RecoveryWorkflow)
+        .filter(RecoveryWorkflow.service_id == service_id, RecoveryWorkflow.status == "RUNNING")
+        .order_by(RecoveryWorkflow.started_at.desc())
+        .first()
+    )
+    if existing_workflow:
+        return existing_workflow
+
     workflow = RecoveryWorkflow(service_id=service_id, status="RUNNING")
     db.add(workflow)
     db.commit()

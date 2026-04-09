@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -11,7 +11,7 @@ class TokenResponse(BaseModel):
 class UserCreate(BaseModel):
     username: str = Field(min_length=3, max_length=64)
     password: str = Field(min_length=8, max_length=128)
-    role: str = Field(default="operator")
+    role: Literal["admin", "operator"] = "operator"
 
 
 class UserOut(BaseModel):

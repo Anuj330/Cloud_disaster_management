@@ -1,13 +1,19 @@
 from functools import lru_cache
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     app_name: str = "Cloud Disaster Management System"
     api_prefix: str = "/api/v1"
-    secret_key: str = "change-me"
+    secret_key: str = "replace-with-a-long-random-secret-key"
     access_token_expire_minutes: int = 60
     algorithm: str = "HS256"
+    allow_insecure_dev_defaults: bool = False
+
+    bootstrap_initial_admin: bool = False
+    initial_admin_username: Optional[str] = None
+    initial_admin_password: Optional[str] = None
 
     postgres_user: str = "druser"
     postgres_password: str = "drpass"
@@ -39,6 +45,10 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000"
     db_wait_max_retries: int = 30
     db_wait_interval_seconds: float = 2.0
+
+    auth_login_rate_limit: int = 5
+    auth_login_rate_window_seconds: int = 300
+    auth_login_lockout_seconds: int = 900
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False)
 
